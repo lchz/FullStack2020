@@ -5,6 +5,6 @@
 
 [part 1]()
 
-+ [courseinfo](https://github.com/lchz/Fullstack2020/tree/master/part1/courseinfo)
++ [course info](https://github.com/lchz/Fullstack2020/tree/master/part1/courseinfo)
 
 + [unicafe]()
