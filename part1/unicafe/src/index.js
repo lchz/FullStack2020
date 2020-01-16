@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 const Statistics = ({ good, neutral, bad, all, score }) => {
     // console.log({bad})
-    if (good  === 0 && neutral === 0 && bad === 0) {
+    if (good === 0 && neutral === 0 && bad === 0) {
         return (<p>No feedback given</p>)
 
     }
@@ -13,24 +13,23 @@ const Statistics = ({ good, neutral, bad, all, score }) => {
         <div>
             <table>
                 <tbody>
-
                     <Statistic text='good' value={good} />
                     <Statistic text='neutral' value={neutral} />
                     <Statistic text='bad' value={bad} />
                     <Statistic text='all' value={all} />
-                    <Statistic text='average' value={score/all} />
-                    <Statistic text='positive' value={good/all*100} string='%' />
+                    <Statistic text='average' value={score / all} />
+                    <Statistic text='positive' value={good / all * 100} string='%' />
                 </tbody>
             </table>
         </div>
     )
 }
 
-const Statistic = ({text, value, string}) => {
+const Statistic = ({ text, value, string }) => {
     return (
         <tr>
-            <td>{text}</td> 
-            <td>{value}{string}</td> 
+            <td>{text}</td>
+            <td>{value}{string}</td>
         </tr>
     )
 }
@@ -57,7 +56,7 @@ const App = () => {
             setScore(score + 1)
         } else if (props === 'neutral') {
             setNeutral(neutral + 1)
-        } 
+        }
         // else if(props === 'bad') {
         //     setBad(bad + 1)
         //     setScore(score - 1)
@@ -73,7 +72,7 @@ const App = () => {
     return (
         <div>
             <h2>Give feedback</h2>
-            
+
             <Button onClick={() => handleValue('good')} text='good' />
             <Button onClick={() => handleValue('neutral')} text='neutral' />
             {/* <Button onclick={() => handleValue('bad')} text='bad' /> */}
