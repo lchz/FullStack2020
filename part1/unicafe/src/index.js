@@ -40,17 +40,21 @@ const App = () => {
     const handleValue = (props) => {
         setAll(all + 1)
 
+        if (props === 'bad') {
+            setBad(bad + 1)
+            setScore(score - 1)
+        }
         if (props === 'good') {
             setGood(good + 1)
             setScore(score + 1)
-            console.log(good)
         } else if (props === 'neutral') {
             setNeutral(neutral + 1)
         } else if (props === 'bad') {
             setBad(bad + 1)
             setScore(score - 1)
-            console.log({bad})
-        }
+           
+        } 
+        console.log({good}, {neutral}, {bad})
     }
 
     return (
