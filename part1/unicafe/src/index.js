@@ -3,26 +3,26 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 const Statistics = ({ good, neutral, bad, all, score }) => {
-    console.log({bad})
+    // console.log({bad})
     if (good  === 0 && neutral === 0 && bad === 0) {
-        return (
-            <div>
-                <p>No feedback given</p>
-            </div>
-        )
+        return (<p>No feedback given</p>)
 
     }
 
     return (
         <div>
-            <p>good {good} </p>
-            <p>neutral {neutral}</p>
-            <p>bad {bad}</p>
-            <p>all {all}</p>
-            <p>average {score / all}</p>
-            <p>positive {100 * good / all} % </p>
+            <Statistic text='good' value={good} />
+            <Statistic text='neutral' value={neutral} />
+            <Statistic text='bad' value={bad} />
+            <Statistic text='all' value={all} />
+            <Statistic text='average' value={score/all} />
+            <Statistic text='positive' value={good/all*100} string='%' />
         </div>
     )
+}
+
+const Statistic = ({text, value, string}) => {
+    return (<p>{text} {value} {string}</p>)
 }
 
 
@@ -48,6 +48,10 @@ const App = () => {
         } else if (props === 'neutral') {
             setNeutral(neutral + 1)
         } 
+        // else if(props === 'bad') {
+        //     setBad(bad + 1)
+        //     setScore(score - 1)
+        // }
     }
 
     const handleBad = () => {
@@ -59,12 +63,12 @@ const App = () => {
     return (
         <div>
             <h2>Give feedback</h2>
-
+            
             <Button onClick={() => handleValue('good')} text='good' />
             <Button onClick={() => handleValue('neutral')} text='neutral' />
-            {/* <Button onclick={() => handleValue('huono')} text='huono' /> */}
+            {/* <Button onclick={() => handleValue('bad')} text='bad' /> */}
             <Button onClick={handleBad} text='bad' />
-            
+
             <h3>Statistics</h3>
             <Statistics good={good} neutral={neutral} bad={bad} all={all} score={score} />
 
