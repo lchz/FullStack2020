@@ -4,27 +4,31 @@ import ReactDOM from 'react-dom'
 const App = (props) => {
     const [selected, setSelected] = useState(0)
     const [points, setPoints] = useState(Array(props.anecdotes.length).fill(0))
+    const [max, setMax] = useState(0)
 
-    const handleVotes = ({selected}) => {
-        // console.log('selected: ', selected)
-
+    const handleVotes = ({ selected }) => {
         const copy = [...points]
         copy[selected]++;
         setPoints(copy)
-        
-        // console.log('2. point: ', points)
-        // console.log('selected point: ', points[selected])
+
+        if (points[selected] >= points[max]) {
+            setMax(selected)
+        }
     }
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
+
             <p>{props.anecdotes[selected]}</p>
             <p>has {points[selected]} votes</p>
-            <button onClick={() => handleVotes({selected})} >
-                vote
-            </button>
+
+            <button onClick={() => handleVotes({ selected })}>vote</button>
             <button onClick={() => setSelected(Math.floor(Math.random() * 6))}>next anecdote </button>
 
+            <h2>Anecdote with most votes</h2>
+            <p>{props.anecdotes[max]}</p>
+            <p>has {points[max]} votes</p>
         </div>
     )
 }
