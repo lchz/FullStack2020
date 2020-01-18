@@ -5,20 +5,19 @@ const Header = ({course}) => {
         <h1>{course.name}</h1>
     )
 }
-const Part = (props) => {
+const Part = ({part, exercises}) => {
     return (
-        <p>
-            {props.part} {props.exercises}
-        </p>
+        <p>{part} {exercises} </p>
     )
 }
 const Content = ({content}) => {
     // console.log(content)
+
+    const rows = () => content.map(c => <Part key={c.name} part={c.name} exercises={c.exercises} />)
+
     return (
         <div>
-            <Part part={content[0].name} exercises={content[0].exercises} />
-            <Part part={content[1].name} exercises={content[1].exercises} />
-            <Part part={content[2].name} exercises={content[2].exercises} />
+            {rows()}
         </div>
     )
 }
