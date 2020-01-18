@@ -13,7 +13,7 @@ const App = () => {
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
 
-  const rows = () => persons.map(p => <p key={p.name}>{p.name} {p.number} </p>)
+  // const rows = () => persons.map(p => <p key={p.name}>{p.name} {p.number} </p>)
 
   // onChange event handler
   const handleNameChange = (event) => {
@@ -48,17 +48,11 @@ const App = () => {
   // filter onChange event handler
   const handleFilter = (event) => {
     setSearch(event.target.value)
-    // event.target.value === '' ? setResults([])
-                              setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
+    event.target.value === '' ? setResults([])
+                              : setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
   }
 
-  const filterRows = () => {
-    if(results.length === 0) {
-      return rows()
-    } 
-
-    return results.map(r => <p key={r.name}>{r.name} {r.number} </p>)
-  } 
+  const filterRows = () => results.map(r => <p key={r.name}>{r.name} {r.number} </p>)
 
   return (
     <div>
