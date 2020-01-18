@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
 
@@ -52,31 +55,17 @@ const App = () => {
                               : setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
   }
 
-  const filterRows = () => results.map(r => <p key={r.name}>{r.name} {r.number} </p>)
-
   return (
     <div>
       <h2>Phonebook</h2>
 
-      filter shown with: <input value={search} onChange={handleFilter} />
+      filter shown with: <Filter search={search} handleFilter={handleFilter} />
 
       <h3>Add a new</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-
-      </form>
+      <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
 
       <h3>Numbers</h3>
-      {/* {rows()} */}
-      {filterRows()}
+      <Persons results={results} />
     </div>
   )
 }
