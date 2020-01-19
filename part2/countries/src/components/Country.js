@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Languages from './Languages'
 import axios from 'axios'
+import config from './config'
 
 
 const Country = ({ country }) => {
@@ -12,7 +13,7 @@ const Country = ({ country }) => {
     const [icon, setIcon] = useState('')
 
     useEffect(() => {
-        axios.get(`http://api.weatherstack.com/current?access_key=35f2f3008b8084f0dcf631b322b66760&query=${country.capital}`)
+        axios.get(`http://api.weatherstack.com/current?access_key=${config.apiKey}&query=${country.capital}`)
             .then(response => {
                 // console.log('current: ', response.data.current)
 
