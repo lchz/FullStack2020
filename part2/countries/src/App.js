@@ -7,7 +7,7 @@ const App = () => {
   const [search, setSearch] = useState('')
   const [show, setShow] = useState([])
   const [showSingleCountry, setShowSingleCountry] = useState(false)
-  const [single, setSingle] = useState() // is the country info to be shown when button clicked
+  const [single, setSingle] = useState() // the country info to be shown when button clicked
 
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2/all')
@@ -17,17 +17,23 @@ const App = () => {
       })
   }, [])
 
-  // input onChange handler
+  // input onChange handler (search)
   const searchHandler = (event) => {
     const data = event.target.value
+
+    // In case if 'hide' button forgotten to press and start a new search
+    if (showSingleCountry === true) {
+      setShowSingleCountry(false)
+    }
+
     setSearch(data)
     data === '' ? setShow([])
-      : setShow(countries.filter(c => c.name.toLowerCase().includes(data.toLowerCase())))
+                 : setShow(countries.filter(c => c.name.toLowerCase().includes(data.toLowerCase())))
   }
 
   // Button onClick handler
-  // 1. To change content of the button
-  // 2. set which country to show
+  // 1. Change content of the button
+  // 2. Set the country to show
   const showHandler = (country) => {
     showSingleCountry ? setShowSingleCountry(false) : setShowSingleCountry(true)
     setSingle(country)
@@ -41,14 +47,15 @@ const App = () => {
 
       //???????????????? All the buttons changed at the same time?????????????
       return (show.map(c => <p key={c.name}>{c.name}
-                              <button onClick={() => showHandler(c)}> 
-                                {showSingleCountry ? 'hide' : 'show'}
-                              </button>
-                            </p>))
+        <button onClick={() => showHandler(c)}>
+          {showSingleCountry ? 'hide' : 'show'}
+        </button>
+      </p>))
     }
     return (
       show.map(c => <Country key={c.name} country={c} />)
     )
+
   }
 
   return (
