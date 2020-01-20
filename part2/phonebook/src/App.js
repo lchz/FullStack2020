@@ -15,7 +15,7 @@ const App = () => {
   // Fetch data from json-server
   useEffect(() => {
     peopleService.getAll()
-                  .then(objects => setPersons(objects))
+      .then(objects => setPersons(objects))
     // axios.get('http://localhost:3001/persons')
     //     .then(response => {
     //       setPersons(response.data)
@@ -47,11 +47,11 @@ const App = () => {
       }
 
       peopleService.create(person)
-                    .then(newPerson => setPersons(persons.concat(newPerson)))
+        .then(newPerson => setPersons(persons.concat(newPerson)))
 
       // axios.post('http://localhost:3001/persons', person) 
       //     .then(setPersons(persons.concat(person)))
-      
+
     }
 
     setNewName('')
@@ -61,8 +61,19 @@ const App = () => {
   // filter onChange event handler
   const handleFilter = (event) => {
     setSearch(event.target.value)
-    event.target.value === '' ? setResults(persons)
-                              :setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
+    setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
+  }
+
+  // DELETE button handler
+  const deletingHandler = (id) => {
+    const deleting = persons.find(p => p.id === id)
+
+    if (window.confirm(`Delete ${deleting.name}?`)) {
+      peopleService.deletePerson(id)
+      setPersons(persons.filter(p => p.id !== id))
+    }
+
+
   }
 
   return (
@@ -75,7 +86,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
 
       <h3>Numbers</h3>
-      <Persons results={results} persons={persons} search={search} />
+      <Persons results={results} persons={persons} search={search} deletingHandler={deletingHandler} />
     </div>
   )
 }
