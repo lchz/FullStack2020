@@ -13,7 +13,13 @@ const create = (newPerson) => {
 }
 
 const deletePerson = (id) => {
-    axios.delete(baseUrl + `/${id}`)
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(r => r.data)
 }
 
-export default { getAll, create, deletePerson }
+const replaceNumber = (id, person) => {
+    const request = axios.put(`${baseUrl}/${id}`, person)
+    return request.then(response => response.data)
+}
+
+export default { getAll, create, deletePerson, replaceNumber }
