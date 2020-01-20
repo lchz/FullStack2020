@@ -42,14 +42,13 @@ const App = () => {
                       .then(returnedPerson => setPersons(
                         persons.map(person => person.id !== p.id ? person : returnedPerson)
                       ))
+                      .then(setNotification(`Replaced ${p.name}'s number`))
                       .catch(error => {
                         setNotification(`Information of ${p.name} has already been removed from server`)
-                        setTimeout(() => {
-                          setNotification(null)
-                        }, 5000)
                         setPersons(persons.filter(person => person.id !== p.id))
                       })
       }
+      
     } else {
       const person = {
         name: newName,
@@ -60,12 +59,10 @@ const App = () => {
         .then(newPerson => setPersons(persons.concat(newPerson)))
 
       setNotification(`Added ${newName}`)
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
       
     }
 
+    setTimeout(() => {setNotification(null)}, 5000)
     setNewName('')
     setNewNumber('')
   }
@@ -83,6 +80,9 @@ const App = () => {
     if (window.confirm(`Delete ${deleting.name}?`)) {
       peopleService.deletePerson(id)
                     .then(setPersons(persons.filter(p => p.id !== id)))
+
+      setNotification(`Deleted ${deleting.name}`)
+      setTimeout(() => {setNotification(null)}, 5000);
     }
   }
 
