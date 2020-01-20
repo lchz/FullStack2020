@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import peopleService from './services/peopleService'
 
 const App = () => {
 
@@ -14,13 +14,13 @@ const App = () => {
 
   // Fetch data from json-server
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-        .then(response => {
-          setPersons(response.data)
-        })
+    peopleService.getAll()
+                  .then(objects => setPersons(objects))
+    // axios.get('http://localhost:3001/persons')
+    //     .then(response => {
+    //       setPersons(response.data)
+    //     })
   }, [])
-
-  // const rows = () => persons.map(p => <p key={p.name}>{p.name} {p.number} </p>)
 
   // onChange event handler
   const handleNameChange = (event) => {
@@ -46,8 +46,11 @@ const App = () => {
         number: newNumber
       }
 
-      axios.post('http://localhost:3001/persons', person) 
-          .then(setPersons(persons.concat(person)))
+      peopleService.create(person)
+                    .then(newPerson => setPersons(persons.concat(newPerson)))
+
+      // axios.post('http://localhost:3001/persons', person) 
+      //     .then(setPersons(persons.concat(person)))
       
     }
 
@@ -58,8 +61,8 @@ const App = () => {
   // filter onChange event handler
   const handleFilter = (event) => {
     setSearch(event.target.value)
-    event.target.value === '' ? setResults([])
-                              : setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
+    event.target.value === '' ? setResults(persons)
+                              :setResults(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
   }
 
   return (
@@ -72,7 +75,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
 
       <h3>Numbers</h3>
-      <Persons results={results} />
+      <Persons results={results} persons={persons} search={search} />
     </div>
   )
 }
