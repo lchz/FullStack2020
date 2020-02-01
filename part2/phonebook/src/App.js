@@ -50,10 +50,7 @@ const App = () => {
       }
       
     } else {
-      const person = {
-        name: newName,
-        number: newNumber
-      }
+      const person = {newName, newNumber}
 
       peopleService.create(person)
         .then(newPerson => setPersons(persons.concat(newPerson)))
@@ -76,7 +73,7 @@ const App = () => {
   // DELETE button handler
   const deletingHandler = (id) => {
     const deleting = persons.find(p => p.id === id)
-
+    
     if (window.confirm(`Delete ${deleting.name}?`)) {
       peopleService.deletePerson(id)
                     .then(setPersons(persons.filter(p => p.id !== id)))
