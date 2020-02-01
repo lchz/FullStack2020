@@ -50,7 +50,10 @@ const App = () => {
       }
       
     } else {
-      const person = {newName, newNumber}
+      const person = {
+        name: newName,
+        number: newNumber
+      }
 
       peopleService.create(person)
         .then(newPerson => setPersons(persons.concat(newPerson)))
