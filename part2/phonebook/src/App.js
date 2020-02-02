@@ -29,7 +29,7 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  // onSubmit event handler
+  /** Create new person, onSubmit event handler*/ 
   const addPerson = (event) => {
     event.preventDefault()
 
@@ -39,13 +39,16 @@ const App = () => {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const changedPerson = { ...p, number: newNumber }
         peopleService.replaceNumber(p.id, changedPerson)
-                      .then(returnedPerson => setPersons(
+                      .then (returnedPerson => setPersons(
                         persons.map(person => person.id !== p.id ? person : returnedPerson)
                       ))
-                      .then(setNotification(`Replaced ${p.name}'s number`))
-                      .catch(error => {
-                        setNotification(`Information of ${p.name} has already been removed from server`)
-                        setPersons(persons.filter(person => person.id !== p.id))
+                      .catch (error => {
+                        if (error) {
+                          setNotification(`Information of ${p.name} has already been removed from server`)
+                          setPersons(persons.filter(person => person.id !== p.id))
+                        } else {
+                          setNotification(`Replaced ${p.name}'s number`)
+                        }
                       })
       }
       
@@ -56,9 +59,14 @@ const App = () => {
       }
 
       peopleService.create(person)
-        .then(newPerson => setPersons(persons.concat(newPerson)))
-
-      setNotification(`Added ${newName}`)
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
+          setNotification(`Added ${newName}`)
+        }) 
+        .catch(error => {
+          setNotification(error.response.data.error)
+          // console.log(error.response.data.error)
+        })
       
     }
 

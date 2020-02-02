@@ -5,8 +5,8 @@ const Notification = ({message}) => {
       return null
     }
 
-    // Error message
-    if (message.search('removed') !== -1) {
+    /** Validation msg */
+    if (message.search('Added') === -1 && message.search('Deleted') === -1 && message.search('Replaced') === -1) {
       const errorStyle = {
         color: 'red',
         background: 'lightgrey',
