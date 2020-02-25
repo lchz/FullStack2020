@@ -1,3 +1,4 @@
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,11 +18,12 @@ const asObject = (anecdote) => {
   }
 }
 
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const Reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action.type)
+  // console.log('state now: ', state)
+  // console.log('action', action.type)
 
   switch (action.type) {
 
@@ -41,6 +43,7 @@ const Reducer = (state = initialState, action) => {
 }
 
 export const voteHandler = (id) => {
+
   return {
     type: 'VOTE',
     data: { id }
