@@ -1,32 +1,31 @@
 
-const notificationReducer = (state = null, action) => {
+const notificationReducer = (state='', action) => {
 
     switch (action.type) {
+
         case 'SET_NOTIF':
             return action.message
+
         default:
             return state
     }
 }
 
-export const notifVoteChange = value => {
-    return {
-        type: 'SET_NOTIF',
-        message: `you voted '${value}'`
-    }
-}
+export const setNotification = (message, time) => {
+    return dispatch => {
+        const t = Number(time) * 1000
 
-export const notifNoteChange = value => {
-    return {
-        type: 'SET_NOTIF',
-        message: `you added '${value}'`
-    }
-}
+        dispatch({
+            type: 'SET_NOTIF',
+            message
+        })
 
-export const notifReset = () => {
-    return {
-        type: 'SET_NOTIF',
-        message: null
+        setTimeout(() => {
+            dispatch({
+                type: 'SET_NOTIF',
+                message: null
+            })
+        }, t)
     }
 }
 

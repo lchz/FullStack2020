@@ -32,8 +32,23 @@
     },
     {
       "content": "qwert",
-      "votes": 0,
+      "votes": 11,
       "id": "gPz6EJS"
+    },
+    {
+      "content": "hello thunk",
+      "votes": 3,
+      "id": "r4uBGkg"
+    },
+    {
+      "content": "New new new",
+      "votes": 0,
+      "id": "x_xes55"
+    },
+    {
+      "content": "Notification with thunk",
+      "votes": 0,
+      "id": "qmw4vLP"
     }
   ]
 }

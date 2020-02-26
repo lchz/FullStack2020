@@ -1,3 +1,5 @@
+import anecdotesServer from '../services/anecdotes'
+
 
 const Reducer = (state = [], action) => {
   // console.log('state now: ', state)
@@ -9,13 +11,10 @@ const Reducer = (state = [], action) => {
       return action.data
 
     case 'VOTE':
-      const id = action.data.id
-      const anecdote = state.find(a => a.id === id)
-      const changedAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
-      return state.map(a => a.id !== id ? a : changedAnecdote)
+      return action.data
 
     case 'NEW_ANEC':
-      return state.concat(action.newAnec)
+      return state.concat(action.data)
 
     default:
       return state
@@ -23,25 +22,36 @@ const Reducer = (state = [], action) => {
 
 }
 
-export const initializeAnecdotes = (data) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdotesServer.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes
+    })
   }
 }
 
-export const voteHandler = (id) => {
+export const voteHandler = (anec) => {
+  return async dispatch => {
+    
+    await anecdotesServer.newVote(anec)
+    const anecdotes = await anecdotesServer.getAll()
 
-  return {
-    type: 'VOTE',
-    data: { id }
+    dispatch({
+      type: 'VOTE',
+      data: anecdotes
+    })
   }
 }
 
-export const createAnecdote = (newAnec) => {
-  return {
-    type: 'NEW_ANEC',
-    newAnec
+export const createAnecdote = (content) => {
+  return async dispatch => {
+    const newAnec = await anecdotesServer.createNew(content)
+    dispatch({
+      type: 'NEW_ANEC',
+      data: newAnec
+    })
   }
 }
 

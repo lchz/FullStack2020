@@ -9,18 +9,8 @@ const Notification = () => {
   }
 
   const notification = useSelector(({ notification }) => {
-    if (notification) {
-      return notification
-    }
-
-    return null
+    return notification ? notification : null
   })
-  // const notification = null
-  // useSelector(({anedocates, notification}) => {
-  //   if ()
-  // })
-  // console.log('notif:', notification)
-  // console.log('state:', useSelector(state => state))
 
   return (
     <div>
