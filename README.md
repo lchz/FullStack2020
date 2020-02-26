@@ -22,3 +22,7 @@ part 4
 part 5
 - [Blog list frontend](https://github.com/lchz/part5-bloglist_Frontend)
 
+[part 6](https://github.com/lchz/Fullstack2020/tree/master/part6)
+- [Unicafe-redux](https://github.com/lchz/Fullstack2020/tree/master/part6/unicafe-redux)
+- [Redux-anecdotes](https://github.com/lchz/Fullstack2020/tree/master/part6/redux-anecdotes)
+
