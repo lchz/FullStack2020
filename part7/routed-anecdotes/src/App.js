@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import {
-  // BrowserRouter as Router,
   Switch, Route, Link,
-  useParams,
   useHistory,
-  Redirect,
   useRouteMatch
 } from 'react-router-dom'
 
@@ -21,11 +18,6 @@ const Menu = () => {
       <Link style={padding} to='/new'>new</Link>
       <Link style={padding} to='/about'>about</Link>
     </div>
-    // <div>
-    //   <a href='#' style={padding}>anecdotes</a>
-    //   <a href='#' style={padding}>create new</a>
-    //   <a href='#' style={padding}>about</a>
-    // </div>
   )
 }
 
@@ -46,8 +38,8 @@ const Anecdote = ({ anecdote }) => (
 
   <div>
     <h3>{anecdote.content}</h3>
-    <p>has {anecdote.votes} </p>
-    <p>for more info see <a href=''>${anecdote.info}</a></p>
+    <p>has {anecdote.votes} votes</p>
+    <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
   </div>
 )
 
@@ -78,6 +70,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const history = useHistory()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
@@ -86,6 +80,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
   }
 
   return (
@@ -133,9 +128,13 @@ const App = () => {
   const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
-    console.log('AAA', anecdote)
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    
+    setNotification(`a new anecdote '${anecdote.content}' created!`)
+    setTimeout(() => {
+      setNotification('')
+    }, 10000)
   }
 
   const anecdoteById = (id) =>
@@ -153,23 +152,18 @@ const App = () => {
   }
 
   const match = useRouteMatch('/anecdotes/:id')
-  console.log('match', match.params.id)
-  const anecdote = match ? anecdotes.find(a => a.id === Number(match.params.id))
-    : null
-console.log('AAA', anecdote)
+  const anecdote = match ? anecdotes.find(a => Number(a.id) === Number(match.params.id))
+                          : null
 
   return (
     <div>
       <h1>Software anecdotes</h1>
-      {/* <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer /> */}
 
       <Menu />
+      {notification}
 
       <Switch>
+
         <Route path='/create'>
           <CreateNew addNew={addNew} />
         </Route>
@@ -178,11 +172,15 @@ console.log('AAA', anecdote)
           <Anecdote anecdote={anecdote} />
         </Route>
 
+        <Route path='/about'>
+          <About />
+        </Route>
+
         <Route path='/'>
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
-      </Switch>
 
+      </Switch>
 
       <Footer />
     </div>
