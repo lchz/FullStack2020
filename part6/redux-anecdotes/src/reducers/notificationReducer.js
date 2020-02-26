@@ -11,6 +11,8 @@ const notificationReducer = (state='', action) => {
     }
 }
 
+let timeOutId
+
 export const setNotification = (message, time) => {
     return dispatch => {
         const t = Number(time) * 1000
@@ -20,7 +22,8 @@ export const setNotification = (message, time) => {
             message
         })
 
-        setTimeout(() => {
+        clearTimeout(timeOutId)
+        timeOutId = setTimeout(() => {
             dispatch({
                 type: 'SET_NOTIF',
                 message: null

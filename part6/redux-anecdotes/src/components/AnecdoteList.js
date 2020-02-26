@@ -28,7 +28,7 @@ const AnecdoteList = (a) => {
 
     const buttonHandler = (anec) => {
         dispatch(voteHandler(anec))
-        dispatch(setNotification( `you voted '${anec.content}'`, 3))
+        dispatch(setNotification( `you voted '${anec.content}'`, 5))
     }
 
     return (
