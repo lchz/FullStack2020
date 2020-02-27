@@ -4,6 +4,7 @@ import {
   useHistory,
   useRouteMatch
 } from 'react-router-dom'
+import { useField } from './hooks'
 
 
 const Menu = () => {
@@ -66,41 +67,54 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
 
   const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
+
     history.push('/')
+  }
+
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
     <div>
       <h2>create a new anecdote</h2>
+
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} reset='false' />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} reset='false' />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...info} reset='false' />
         </div>
         <button>create</button>
       </form>
+
+      <button onClick={handleReset}>reset</button>
+
     </div>
   )
 
@@ -130,7 +144,7 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
-    
+
     setNotification(`a new anecdote '${anecdote.content}' created!`)
     setTimeout(() => {
       setNotification('')
@@ -153,7 +167,7 @@ const App = () => {
 
   const match = useRouteMatch('/anecdotes/:id')
   const anecdote = match ? anecdotes.find(a => Number(a.id) === Number(match.params.id))
-                          : null
+    : null
 
   return (
     <div>

@@ -1,0 +1,55 @@
+{
+  "notes": [
+    {
+      "content": "Custom-hook is confusing",
+      "id": 1
+    },
+    {
+      "content": "creating",
+      "id": 2
+    },
+    {
+      "content": "trying",
+      "id": 3
+    },
+    {
+      "content": "a new note",
+      "id": 4
+    },
+    {
+      "content": "reset",
+      "id": 5
+    },
+    {
+      "content": "fixed",
+      "id": 6
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "123-123",
+      "id": 1
+    },
+    {
+      "name": "second person",
+      "number": "111-111",
+      "id": 2
+    },
+    {
+      "name": "ha",
+      "number": "000-000",
+      "id": 3
+    },
+    {
+      "name": "reset",
+      "number": "999",
+      "id": 4
+    },
+    {
+      "name": "fixed",
+      "number": "888",
+      "id": 5
+    }
+  ]
+}
