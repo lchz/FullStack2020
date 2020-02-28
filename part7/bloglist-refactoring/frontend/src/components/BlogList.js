@@ -12,7 +12,7 @@ const sortBlogs = (b1, b2) => {
 const BlogList = () => {
 
     const dispatch = useDispatch()
-    let blogs = useSelector(state => state.blogs.sort(sortBlogs))
+    const blogs = useSelector(state => state.blogs.sort(sortBlogs))
     const user = useSelector(state => state.user)
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const BlogList = () => {
             try {
 
                 dispatch(removeBlog(blog))
-                
+
                 const notification = {
                     message: `Successfully removed ${blog.title} by ${blog.author}`,
                     type: 'success'
@@ -46,9 +46,6 @@ const BlogList = () => {
                 }
                 dispatch((setNotification(notification, 5)))
             }
-
-            
-
         }
 
     }
