@@ -30,5 +30,5 @@ part 5
 - [Routed-anecdotes](https://github.com/lchz/Fullstack2020/tree/master/part7/routed-anecdotes)
 - [Country-hook](https://github.com/lchz/Fullstack2020/tree/master/part7/country-hook)
 - [Ultimate-hooks](https://github.com/lchz/Fullstack2020/tree/master/part7/ultimate-hooks)
-- [Bloglist-refactoring](https://github.com/lchz/Fullstack2020/tree/master/part7/bloglist-refactoring)
+- [Refactored-bloglist](https://github.com/lchz/Fullstack2020/tree/master/part7/bloglist-refactoring)
 
