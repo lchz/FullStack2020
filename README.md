@@ -26,3 +26,9 @@ part 5
 - [Unicafe-redux](https://github.com/lchz/Fullstack2020/tree/master/part6/unicafe-redux)
 - [Redux-anecdotes](https://github.com/lchz/Fullstack2020/tree/master/part6/redux-anecdotes)
 
+[part 7](https://github.com/lchz/Fullstack2020/tree/master/part7)
+- [Routed-anecdotes](https://github.com/lchz/Fullstack2020/tree/master/part7/routed-anecdotes)
+- [Country-hook](https://github.com/lchz/Fullstack2020/tree/master/part7/country-hook)
+- [Ultimate-hooks](https://github.com/lchz/Fullstack2020/tree/master/part7/ultimate-hooks)
+- [Bloglist-refactoring](https://github.com/lchz/Fullstack2020/tree/master/part7/bloglist-refactoring)
+
