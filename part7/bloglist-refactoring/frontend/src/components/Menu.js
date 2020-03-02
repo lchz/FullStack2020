@@ -2,9 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
+import {  Button } from 'react-bootstrap'
+import { Menu } from 'semantic-ui-react'
 
 
-const Menu = ({ user }) => {
+const MenuBar = () => {
 
     const dispatch = useDispatch()
 
@@ -14,13 +16,24 @@ const Menu = ({ user }) => {
     }
 
     return (
-        <div className='menu'>
-            <Link className='link' to='/users'>users</Link>
-            <Link className='link' to='/'>blogs</Link>
-            {user.name} logged in <button onClick={() => handleLogout()}>Logout</button>
-        </div>
+
+        <Menu inverted>
+            <Menu.Item link>
+                <Link to="/">blogs</Link>
+            </Menu.Item>
+    
+            <Menu.Item link>
+                <Link to="/users">users</Link>
+            </Menu.Item>
+
+            <Menu.Item link>
+                <Button variant='primary' type='submit' onClick={() => handleLogout()}>
+                    Logout
+                </Button>
+            </Menu.Item>
+        </Menu>
     )
 }
 
 
-export default Menu
+export default MenuBar

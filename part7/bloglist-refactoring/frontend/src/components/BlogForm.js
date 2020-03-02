@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Form, Button } from 'semantic-ui-react'
 
 const BlogForm = ({ createBlog }) => {
 
@@ -26,9 +27,9 @@ const BlogForm = ({ createBlog }) => {
     <div>
       <h2>create new</h2>
 
-      <form onSubmit={addBlog}>
-        <div>
-          title:
+      <Form onSubmit={addBlog}>
+        <Form.Field>
+          <label>title</label>
           <input
             type="text"
             value={title}
@@ -36,9 +37,10 @@ const BlogForm = ({ createBlog }) => {
             name="Title"
             onChange={({ target }) => setTitle(target.value)}
           />
-        </div>
-        <div>
-          author:
+        </Form.Field>
+
+        <Form.Field>
+          <label>author</label>
           <input
             type="text"
             value={author}
@@ -46,9 +48,10 @@ const BlogForm = ({ createBlog }) => {
             name="Author"
             onChange={({ target }) => setAuthor(target.value)}
           />
-        </div>
-        <div>
-          url:
+        </Form.Field>
+
+        <Form.Field>
+          <label>url</label>
           <input
             type="text"
             value={url}
@@ -56,9 +59,11 @@ const BlogForm = ({ createBlog }) => {
             name="Url"
             onChange={({ target }) => setUrl(target.value)}
           />
-        </div>
-        <button id='create-button' type="submit">create</button>
-      </form>
+        </Form.Field>
+
+        <Button primary type='submit'>create</Button>
+        
+      </Form><br></br>
 
     </div>
   )

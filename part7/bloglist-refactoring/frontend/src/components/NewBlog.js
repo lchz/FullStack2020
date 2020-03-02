@@ -25,7 +25,7 @@ const NewBlog = () => {
         } catch (exception) {
             const notification = {
                 message: 'New blog failed to add',
-                type: 'error'
+                type: 'danger'
             }
             dispatch((setNotification(notification, 5)))
         }

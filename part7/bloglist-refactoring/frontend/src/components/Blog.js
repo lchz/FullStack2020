@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addComment, getComments } from '../reducers/commentReducer'
+import { Form, Button } from 'semantic-ui-react'
 
 
 const Blog = ({ blog, updateLikes, deleteBlog, sameUser }) => {
@@ -11,9 +12,9 @@ const Blog = ({ blog, updateLikes, deleteBlog, sameUser }) => {
     if (blog) {
       dispatch(getComments(blog.id))
     }
-    
+
   }, [blog, dispatch])
-  
+
   const comments = useSelector(state => state.comments)
 
   const commentHandler = (event, id) => {
@@ -21,9 +22,11 @@ const Blog = ({ blog, updateLikes, deleteBlog, sameUser }) => {
 
     const content = event.target.comment.value
     event.target.comment.value = ''
-    
+
     dispatch(addComment(content, id))
   }
+
+  const likes = () => { return (blog.likes) }
 
   if (!blog) return null
 
@@ -38,29 +41,43 @@ const Blog = ({ blog, updateLikes, deleteBlog, sameUser }) => {
       </div>
 
       <div>
-        likes: {blog.likes}
-        <button onClick={updateLikes}>like</button>
-      </div>
-
-      <div>
         added by {blog.user.name}
       </div>
 
       <div>
-        {sameUser && <button onClick={deleteBlog}>remove</button>}
+        <Button basic
+          color='violet'
+          content='Like'
+          icon='heart'
+          label={{ basic: true, color: 'violet', pointing: 'left', content: likes() }}
+          onClick={updateLikes}
+        />
+      </div> <br></br>
+
+      <div>
+        {sameUser && <Button color='red' onClick={deleteBlog}>remove</Button>}
       </div><br></br>
-      
+
       <div>
         <strong>comments</strong>
 
-        <form onSubmit={(event) => commentHandler(event, blog.id)}>
-          <input type='text' name='comment'/>
-          <button type='submit'>add comment</button>
-        </form>
+        <Form onSubmit={(event) => commentHandler(event, blog.id)}>
 
-        <ul>
-          {comments.map(c => <li key={c._id}>{c.content} </li>)}
-        </ul>
+          <Form.Field>
+            <input
+              type="text"
+              id='content'
+              name="comment"
+            />
+          </Form.Field>
+
+          <Button primary type='submit'>add comment</Button>
+          
+        </Form><br></br>
+
+        <div className='container'>
+            {comments.map(c => <li key={c._id}>{c.content} </li>)}
+        </div>
       </div>
 
     </div>

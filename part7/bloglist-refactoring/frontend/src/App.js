@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import './index.css'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import { useDispatch, useSelector } from 'react-redux'
@@ -57,7 +55,7 @@ const App = () => {
     } catch (exception) {
       const notification = {
         message: 'Wrong username or password',
-        type: 'error'
+        type: 'danger'
       }
       dispatch((setNotification(notification, 5)))
     }
@@ -67,15 +65,13 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <Togglable buttonLabel='Log in'>
-      <LoginForm
-        username={username}
-        password={password}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-        handleSubmit={handleLogin}
-      />
-    </Togglable>
+    <LoginForm
+      username={username}
+      password={password}
+      handleUsernameChange={({ target }) => setUsername(target.value)}
+      handlePasswordChange={({ target }) => setPassword(target.value)}
+      handleSubmit={handleLogin}
+    />
   )
 
   const user = useSelector(state => state.user)

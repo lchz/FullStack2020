@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import '../index.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { toUpdateBlog, removeBlog, initializeBlogs } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
@@ -58,7 +59,7 @@ const BlogList = () => {
 
                 const notification = {
                     message: `Failed to delete ${blog.title} by ${blog.title}`,
-                    type: 'error'
+                    type: 'danger'
                 }
                 dispatch((setNotification(notification, 5)))
             }

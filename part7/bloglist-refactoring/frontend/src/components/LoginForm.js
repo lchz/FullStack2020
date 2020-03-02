@@ -1,6 +1,8 @@
 import React from 'react'
 import Notification from './Notification'
 import PropTypes from 'prop-types'
+import { Form } from 'react-bootstrap'
+import { Button } from 'semantic-ui-react'
 
 const LoginForm = ({ handleSubmit,
   handleUsernameChange,
@@ -14,31 +16,33 @@ const LoginForm = ({ handleSubmit,
 
       <Notification />
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          username:
-          <input
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
             type="text"
             value={username}
             id='username'
             name="Username"
             onChange={handleUsernameChange}
           />
-        </div>
 
-        <div>
-          password:
-          <input
+          <Form.Label>password:</Form.Label>
+          <Form.Control
             type="password"
             value={password}
             id='password'
             name="Password"
             onChange={handlePasswordChange}
-          />
-        </div>
+          /> <br></br>
 
-        <button id='login-button' type="submit">Login</button>
-      </form>
+          <Button primary type='submit' id='login-button'>
+            Login
+          </Button>
+
+        </Form.Group>
+
+      </Form>
     </div>
   )
 }

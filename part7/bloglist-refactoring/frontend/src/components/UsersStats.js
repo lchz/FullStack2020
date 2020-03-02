@@ -29,8 +29,7 @@ const UsersStats = () => {
                     <h2>Users</h2>
 
 
-                    {/* <Table striped> */}
-                    <table>
+                    <Table striped>
                         <thead>
                             <tr>
                                 <th></th>
@@ -47,8 +46,7 @@ const UsersStats = () => {
                                 </tr>
                             )}
                         </tbody>
-                    </table>
-                    {/* </Table> */}
+                    </Table>
 
                 </Route>
             </Switch>
