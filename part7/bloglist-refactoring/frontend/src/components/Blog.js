@@ -1,53 +1,70 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addComment, getComments } from '../reducers/commentReducer'
 
 
 const Blog = ({ blog, updateLikes, deleteBlog, sameUser }) => {
-  const [visibility, setVisibility] = useState(false)
-  const [label, setLabel] = useState('view')
 
-  const viewButtonHandler = () => {
-    if (!visibility) {
-      setLabel('hide')
-    } else {
-      setLabel('view')
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (blog) {
+      dispatch(getComments(blog.id))
     }
+    
+  }, [blog, dispatch])
+  
+  const comments = useSelector(state => state.comments)
 
-    setVisibility(!visibility)
+  const commentHandler = (event, id) => {
+    event.preventDefault()
+
+    const content = event.target.comment.value
+    event.target.comment.value = ''
+    
+    dispatch(addComment(content, id))
   }
 
-  // const removeButton = sameUser === true
-  // ?<button onClick={deleteBlog}>remove</button>
-  //        : null
-
+  if (!blog) return null
 
   return (
-    <div className='blog'>
-      <div>
+    <div>
+      <h2>
         {blog.title} - {blog.author}
-        <button onClick={() => viewButtonHandler()}>{label}</button>
+      </h2>
+
+      <div>
+        {blog.url}
       </div>
 
-      {visibility && (
-        <div>
-          <div>
-            {blog.url}
-          </div>
+      <div>
+        likes: {blog.likes}
+        <button onClick={updateLikes}>like</button>
+      </div>
 
-          <div>
-            likes: {blog.likes}
-            <button onClick={updateLikes}>like</button>
-          </div>
+      <div>
+        added by {blog.user.name}
+      </div>
 
-          <div>
-            {blog.user.name}
-          </div>
+      <div>
+        {sameUser && <button onClick={deleteBlog}>remove</button>}
+      </div><br></br>
+      
+      <div>
+        <strong>comments</strong>
 
-          {sameUser && <button onClick={deleteBlog}>remove</button>}
+        <form onSubmit={(event) => commentHandler(event, blog.id)}>
+          <input type='text' name='comment'/>
+          <button type='submit'>add comment</button>
+        </form>
 
-        </div>
-      )}
+        <ul>
+          {comments.map(c => <li key={c._id}>{c.content} </li>)}
+        </ul>
+      </div>
 
     </div>
+
   )
 
 }

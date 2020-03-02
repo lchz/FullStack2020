@@ -4,13 +4,15 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
-import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import { useDispatch, useSelector } from 'react-redux'
-import { createBlog, initializeBlogs } from './reducers/blogReducer'
 import BlogList from './components/BlogList'
 import { setNotification } from './reducers/notificationReducer'
 import { setUser } from './reducers/userReducer'
+import { Switch, Route, useHistory } from 'react-router-dom'
+import UsersStats from './components/UsersStats'
+import Menu from './components/Menu'
+
 
 
 const App = () => {
@@ -18,11 +20,7 @@ const App = () => {
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //   dispatch(initializeBlogs())
-  // }, [dispatch])
-
+  const history = useHistory()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -47,15 +45,14 @@ const App = () => {
       )
       blogService.setToken(user.token)
       dispatch(setUser(user))
-      // setUser(user)
-      setUsername('')
-      setPassword('')
 
       const notification = {
         message: `Welcome back ${user.name}`,
         type: 'success'
       }
       dispatch((setNotification(notification, 5)))
+
+      history.push('/')
 
     } catch (exception) {
       const notification = {
@@ -64,6 +61,9 @@ const App = () => {
       }
       dispatch((setNotification(notification, 5)))
     }
+
+    setUsername('')
+    setPassword('')
   }
 
   const loginForm = () => (
@@ -78,67 +78,35 @@ const App = () => {
     </Togglable>
   )
 
-
-  const blogFormRef = React.createRef()
-
-  const addBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    try {
-      dispatch(createBlog(blogObject))
-      const notification = {
-        message: `A new blog ${blogObject.title} by ${blogObject.author} added`,
-        type: 'success'
-      }
-      dispatch((setNotification(notification, 5)))
-
-    } catch (exception) {
-      const notification = {
-        message: 'New blog failed to add',
-        type: 'error'
-      }
-      dispatch((setNotification(notification, 5)))
-    }
-
-  }
-
-  const newBlogForm = () => (
-    <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
-    </Togglable>
-  )
-
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogAppUser')
-  }
-
-  const logoutForm = () => (
-    <form onSubmit={handleLogout}>
-      <button type="submit">Logout</button>
-    </form>
-  )
-
   const user = useSelector(state => state.user)
 
+
   return (
-    <div>
+
+    <div className='container'>
       {user === null ? loginForm()
         :
         <div>
-          <h2>blogs</h2>
+          <Menu user={user} />
+          <h2>blog app</h2>
 
           <Notification />
 
-          <div>{user.name} logged in {logoutForm()}</div>
-          <br></br>
+          <Switch>
 
-          {newBlogForm()} <br></br>
+            <Route path='/users'>
+              <UsersStats />
+            </Route>
 
-          <BlogList />
 
+            <Route path='/'>
+              <BlogList />
+            </Route>
 
+          </Switch>
         </div>
       }
+
     </div>
   )
 }
