@@ -6,7 +6,7 @@ import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 const NewBook = (props) => {
 
   const [title, setTitle] = useState('')
-  const [author, setAuhtor] = useState('')
+  const [authorName, setAuhtorName] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
@@ -15,9 +15,9 @@ const NewBook = (props) => {
     ADD_BOOK,
     {
       refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
-      onError: (error) => {
-        props.setMessage({ type: 'red', content: error.graphQLErrors[0].message })
-      }
+      // onError: (error) => {
+      //   props.setMessage({ type: 'red', content: error.graphQLErrors[0].message })
+      // }
     }
   )
 
@@ -28,13 +28,19 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    createBook({ variables: { title, author, published: Number(published), genres } })
+    try {
+      await createBook({ variables: { title, authorName, published: Number(published), genres } })
 
-    props.setMessage({type: 'green', content: `book ${title} created`})
+      props.setMessage({ type: 'green', content: `book ${title} created` })
+      
+    } catch (error) {
+      props.setMessage({type: 'red', content: error.graphQLErrors[0].message})
+    }
+    
 
     setTitle('')
     setPublished('')
-    setAuhtor('')
+    setAuhtorName('')
     setGenres([])
     setGenre('')
   }
@@ -57,8 +63,8 @@ const NewBook = (props) => {
         <div>
           author
           <input
-            value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            value={authorName}
+            onChange={({ target }) => setAuhtorName(target.value)}
           />
         </div>
         <div>

@@ -8,6 +8,7 @@ const BirthdayForm = ({ setMessage }) => {
     const [born, setBorn] = useState('')
 
     const result = useQuery(ALL_AUTHORS)
+
     let authors = null
     if (result.data) {
         authors = result.data.allAuthors
@@ -16,7 +17,11 @@ const BirthdayForm = ({ setMessage }) => {
     const [changeBorn] = useMutation(
         EDIT_BORN,
         {
-            refetchQueries: [{ query: ALL_AUTHORS }]
+            refetchQueries: [{ query: ALL_AUTHORS }],
+            onError: (error) => {
+                console.log('ERROR:', error.graphQLErrors)
+                setMessage({ type: 'red', content: error.graphQLErrors[0].message })
+            }
         }
     )
 
