@@ -32,3 +32,5 @@ part 5
 - [Ultimate-hooks](https://github.com/lchz/Fullstack2020/tree/master/part7/ultimate-hooks)
 - [Refactored-bloglist](https://github.com/lchz/Fullstack2020/tree/master/part7/bloglist-refactoring)
 
+part 8
+- [Library with GraphQL](https://github.com/lchz/Fullstack2020/tree/master/part8)
