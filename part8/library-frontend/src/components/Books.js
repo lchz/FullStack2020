@@ -1,19 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
+
 const Books = (props) => {
-  const result = useQuery(ALL_BOOKS)
+  const [books, setBooks] = useState([])
+  const [genre, setGenre] = useState(null)
+
+  const { loading, data, refetch } = useQuery(ALL_BOOKS, {
+    variables: { genre }
+  })
+
+  useEffect(() => {
+    if (data) {
+      setBooks(data.allBooks)
+    }
+
+  }, [data, genre])
 
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (loading) {
     return <div>Loading...</div>
   }
-  
-  const books = result.data.allBooks
+
+  const showAll = (event) => {
+    event.preventDefault()
+    setGenre(null)
+    refetch()
+  }
 
   return (
     <div>
@@ -22,7 +39,9 @@ const Books = (props) => {
       <table>
         <tbody>
           <tr>
-            <th></th>
+            <th>
+              in genre patterns
+            </th>
             <th>
               author
             </th>
@@ -39,6 +58,18 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
+
+      <div>
+        <form onSubmit={showAll}>
+
+          {props.genres.length > 0 ? props.genres.map(genre =>
+            <button key={genre} onClick={() => setGenre(genre)}>{genre} </button>
+          ) : null}
+
+          <button type='submit'>all</button>
+
+        </form>
+      </div>
     </div>
   )
 }

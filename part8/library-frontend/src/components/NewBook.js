@@ -14,10 +14,7 @@ const NewBook = (props) => {
   const [createBook] = useMutation(
     ADD_BOOK,
     {
-      refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
-      // onError: (error) => {
-      //   props.setMessage({ type: 'red', content: error.graphQLErrors[0].message })
-      // }
+      refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
     }
   )
 
@@ -32,11 +29,10 @@ const NewBook = (props) => {
       await createBook({ variables: { title, authorName, published: Number(published), genres } })
 
       props.setMessage({ type: 'green', content: `book ${title} created` })
-      
+
     } catch (error) {
-      props.setMessage({type: 'red', content: error.graphQLErrors[0].message})
+      props.setMessage({ type: 'red', content: error.graphQLErrors[0].message })
     }
-    
 
     setTitle('')
     setPublished('')
@@ -60,6 +56,7 @@ const NewBook = (props) => {
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
+
         <div>
           author
           <input
@@ -67,6 +64,7 @@ const NewBook = (props) => {
             onChange={({ target }) => setAuhtorName(target.value)}
           />
         </div>
+
         <div>
           published
           <input
@@ -75,6 +73,7 @@ const NewBook = (props) => {
             onChange={({ target }) => setPublished(target.value)}
           />
         </div>
+
         <div>
           <input
             value={genre}
@@ -82,9 +81,11 @@ const NewBook = (props) => {
           />
           <button onClick={addGenre} type="button">add genre</button>
         </div>
+
         <div>
           genres: {genres.join(' ')}
         </div>
+
         <button type='submit'>create book</button>
       </form>
     </div>

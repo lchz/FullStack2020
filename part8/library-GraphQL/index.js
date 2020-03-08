@@ -2,6 +2,7 @@ const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const mongoose = require('mongoose')
 const Book = require('./models/book')
 const Author = require('./models/author')
+const User = require('./models/user')
 
 mongoose.set('useFindAndModify', false)
 
@@ -32,7 +33,7 @@ const typeDefs = gql`
         name: String!
         id: ID!
         born: Int
-        bookCount: Int
+        bookCount: Int!
     }
 
     type User {
@@ -78,38 +79,35 @@ const typeDefs = gql`
             password: String!
         ): Token
     }
+
+    type Subscription {
+        bookAdded: Book!
+    }
 `
 
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'SECRET_KEY'
+
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 
 const resolvers = {
     Query: {
         bookCount: () => Book.collection.countDocuments(),
         authorCount: () => Author.collection.countDocuments(),
         allBooks: (root, args) => {
+            if (args.genre) {
+                // return Book.find({ genres: { "$in": [args.genre] } })
+                return Book.find({ 'genres': args.genre }).populate('author')
+            }
+
             return Book.find({}).populate('author')
         },
-        allAuthors: () => Author.find({}),
-        
+        allAuthors: () => Author.find({}).populate('bookCount'),
+
         me: (root, args, context) => {
             return context.currentUser
-        }
-    },
-
-    Author: {
-        bookCount: async (root) => {
-            let count = 0
-            const bookList = await Book.find({}).populate('author')
-
-            bookList.map(b => {
-                if (b.author.name === root.name) {
-                    count++
-                }
-            })
-
-            return count
-        }
+        },
     },
 
     Mutation: {
@@ -127,17 +125,21 @@ const resolvers = {
             }
 
             let author = await Author.findOne({ name: args.authorName })
-
+            let newBook = null
             try {
                 if (!author) {
                     author = new Author({
-                        name: args.authorName
+                        name: args.authorName,
+                        bookCount: 1
                     })
 
-                    await author.save()
+                } else {
+                    author.bookCount = author.bookCount + 1
                 }
+                
+                await author.save()
 
-                const newBook = new Book({
+                newBook = new Book({
                     title: args.title,
                     author: author,
                     published: args.published,
@@ -145,17 +147,20 @@ const resolvers = {
                 })
 
                 await newBook.save()
-                return newBook
 
             } catch (error) {
                 throw new UserInputError(error.message, {
                     invalidArgs: args
                 })
             }
+
+            pubsub.publish('BOOK_ADDED', { bookAdded: newBook })
+            return newBook
         },
 
         editAuthor: async (root, args, context) => {
             const currentUser = context.currentUser
+
             if (!currentUser) {
                 throw new AuthenticationError('not authenticated')
             }
@@ -179,7 +184,7 @@ const resolvers = {
         },
 
         createUser: (root, args) => {
-            const user = new UserInputError({ username: args.username })
+            const user = new User({ username: args.username })
             return user.save()
                 .catch(error => {
                     throw new UserInputError(error.message), {
@@ -189,7 +194,7 @@ const resolvers = {
         },
 
         login: async (root, args) => {
-            const user = await UserInputError.findOne({ username: args.username })
+            const user = await User.findOne({ username: args.username })
 
             if (!user || args.password !== 'secret') {
                 throw new UserInputError('wrong credentials')
@@ -201,6 +206,12 @@ const resolvers = {
             }
 
             return { value: jwt.sign(userForToken, JWT_SECRET) }
+        }
+    },
+
+    Subscription: {
+        bookAdded: {
+            subscibe: () => pubsub.asyncIterator(['BOOK_ADDED'])
         }
     }
 }
@@ -216,12 +227,13 @@ const server = new ApolloServer({
                 auth.substring(7), JWT_SECRET
             )
 
-            const currentUser = await UserInputError.findById(decodedToken.id).populate('favoriteGenre')
+            const currentUser = await User.findById(decodedToken.id)
             return { currentUser }
         }
     }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
     console.log(`Server ready at ${url}`)
+    console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })

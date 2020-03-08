@@ -7,14 +7,16 @@ import BirthdayForm from './BirthdayForm'
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
 
+  if (!props.show) {
+    return null
+  }
+
   if (result.loading) {
     return <div>Loading...</div>
   }
-  
-  const authors = result.data.allAuthors
-  
-  if (!props.show) {
-    return null
+  let authors = null
+  if (result.data) {
+    authors = result.data.allAuthors
   }
 
   return (
@@ -46,8 +48,8 @@ const Authors = (props) => {
         </tbody>
       </table>
 
-      <BirthdayForm setMessage={props.setMessage} />
-
+      {!props.token ? null : <BirthdayForm setMessage={props.setMessage} />}
+      
     </div>
   )
 }

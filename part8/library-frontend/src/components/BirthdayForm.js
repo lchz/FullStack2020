@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { EDIT_BORN, ALL_AUTHORS } from '../queries'
 
@@ -7,19 +7,22 @@ const BirthdayForm = ({ setMessage }) => {
     const [name, setName] = useState('')
     const [born, setBorn] = useState('')
 
+    const [authors, setAuthors] = useState([])
+
     const result = useQuery(ALL_AUTHORS)
 
-    let authors = null
-    if (result.data) {
-        authors = result.data.allAuthors
-    }
+    useEffect(() => {
+        if (result.data) {
+            setAuthors(result.data.allAuthors)
+        }
+    }, [result.data])
+
 
     const [changeBorn] = useMutation(
         EDIT_BORN,
         {
             refetchQueries: [{ query: ALL_AUTHORS }],
             onError: (error) => {
-                console.log('ERROR:', error.graphQLErrors)
                 setMessage({ type: 'red', content: error.graphQLErrors[0].message })
             }
         }
@@ -40,7 +43,7 @@ const BirthdayForm = ({ setMessage }) => {
         setName('')
         setBorn('')
     }
-
+    
     return (
         <div>
             <h2>Set birthday</h2>
